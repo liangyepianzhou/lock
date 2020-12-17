@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.demo.mapper.PasswordMapper">
-  <resultMap id="BaseResultMap" type="com.example.demo.pojo.Password">
-    <id column="lock_id" jdbcType="INTEGER" property="lockId" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
+<mapper namespace="com.example.demo.mapper.LocksMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.pojo.Locks">
+    <id column="lock_id" jdbcType="VARCHAR" property="lockId" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="mumber" jdbcType="INTEGER" property="mumber" />
+    <result column="advice" jdbcType="INTEGER" property="advice" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -64,15 +67,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    lock_id, password
+    lock_id, PASSWORD, ip, mumber, advice
   </sql>
-  <select id="selectByExample" parameterType="com.example.demo.pojo.PasswordExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.example.demo.pojo.LocksExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from password
+    from locks
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -80,59 +83,88 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from password
-    where lock_id = #{lockId,jdbcType=INTEGER}
+    from locks
+    where lock_id = #{lockId,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from password
-    where lock_id = #{lockId,jdbcType=INTEGER}
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from locks
+    where lock_id = #{lockId,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.example.demo.pojo.PasswordExample">
-    delete from password
+  <delete id="deleteByExample" parameterType="com.example.demo.pojo.LocksExample">
+    delete from locks
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.example.demo.pojo.Password">
-    insert into password (lock_id, password)
-    values (#{lockId,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.example.demo.pojo.Locks">
+    insert into locks (lock_id, PASSWORD, ip, 
+      mumber, advice)
+    values (#{lockId,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
+      #{mumber,jdbcType=INTEGER}, #{advice,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.example.demo.pojo.Password">
-    insert into password
+  <insert id="insertSelective" parameterType="com.example.demo.pojo.Locks">
+    insert into locks
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="lockId != null">
         lock_id,
       </if>
       <if test="password != null">
-        password,
+        PASSWORD,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="mumber != null">
+        mumber,
+      </if>
+      <if test="advice != null">
+        advice,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="lockId != null">
-        #{lockId,jdbcType=INTEGER},
+        #{lockId,jdbcType=VARCHAR},
       </if>
       <if test="password != null">
         #{password,jdbcType=VARCHAR},
       </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="mumber != null">
+        #{mumber,jdbcType=INTEGER},
+      </if>
+      <if test="advice != null">
+        #{advice,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.example.demo.pojo.PasswordExample" resultType="java.lang.Long">
-    select count(*) from password
+  <select id="countByExample" parameterType="com.example.demo.pojo.LocksExample" resultType="java.lang.Long">
+    select count(*) from locks
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update password
+    update locks
     <set>
       <if test="record.lockId != null">
-        lock_id = #{record.lockId,jdbcType=INTEGER},
+        lock_id = #{record.lockId,jdbcType=VARCHAR},
       </if>
       <if test="record.password != null">
-        password = #{record.password,jdbcType=VARCHAR},
+        PASSWORD = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ip != null">
+        ip = #{record.ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mumber != null">
+        mumber = #{record.mumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.advice != null">
+        advice = #{record.advice,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -140,25 +172,40 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update password
-    set lock_id = #{record.lockId,jdbcType=INTEGER},
-      password = #{record.password,jdbcType=VARCHAR}
+    update locks
+    set lock_id = #{record.lockId,jdbcType=VARCHAR},
+      PASSWORD = #{record.password,jdbcType=VARCHAR},
+      ip = #{record.ip,jdbcType=VARCHAR},
+      mumber = #{record.mumber,jdbcType=INTEGER},
+      advice = #{record.advice,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.pojo.Password">
-    update password
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.pojo.Locks">
+    update locks
     <set>
       <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="mumber != null">
+        mumber = #{mumber,jdbcType=INTEGER},
+      </if>
+      <if test="advice != null">
+        advice = #{advice,jdbcType=INTEGER},
       </if>
     </set>
-    where lock_id = #{lockId,jdbcType=INTEGER}
+    where lock_id = #{lockId,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.example.demo.pojo.Password">
-    update password
-    set password = #{password,jdbcType=VARCHAR}
-    where lock_id = #{lockId,jdbcType=INTEGER}
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.pojo.Locks">
+    update locks
+    set PASSWORD = #{password,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      mumber = #{mumber,jdbcType=INTEGER},
+      advice = #{advice,jdbcType=INTEGER}
+    where lock_id = #{lockId,jdbcType=VARCHAR}
   </update>
 </mapper>

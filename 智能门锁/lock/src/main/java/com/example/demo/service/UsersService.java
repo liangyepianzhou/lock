@@ -16,12 +16,12 @@ public class UsersService {
     @Autowired
            Users users;
 //    查询并返回一个users对象
-    public Users qurityforuser(int id){
-        users =usersMapper.selectByPrimaryKey(id);
+    public Users qurityforuser(String iphone){
+        users =usersMapper.selectByPrimaryKey(iphone);
         return users;
     }
-    public boolean delete(int id){
-        int i = usersMapper.deleteByPrimaryKey(id);
+    public boolean delete(String iphone){
+        int i = usersMapper.deleteByPrimaryKey(iphone);
         if(i==1)
         {return true;}
         else {return false;}

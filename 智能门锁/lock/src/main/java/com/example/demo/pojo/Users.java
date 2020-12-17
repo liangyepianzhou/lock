@@ -5,17 +5,41 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 @Component
 public class Users implements Serializable {
+    private String iphonecall;
+
+    private String number;
+
+    private String name;
+
     private Integer lockId;
 
-    private String username;
-
-    private String password;
-
-    private Integer id;
-
-    private String code;
+    private Integer temppass;
 
     private static final long serialVersionUID = 1L;
+
+    public String getIphonecall() {
+        return iphonecall;
+    }
+
+    public void setIphonecall(String iphonecall) {
+        this.iphonecall = iphonecall;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Integer getLockId() {
         return lockId;
@@ -25,35 +49,11 @@ public class Users implements Serializable {
         this.lockId = lockId;
     }
 
-    public String getUsername() {
-        return username;
+    public Integer getTemppass() {
+        return temppass;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
+    public void setTemppass(Integer temppass) {
+        this.temppass = temppass;
     }
 }
