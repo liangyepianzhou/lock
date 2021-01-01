@@ -7,6 +7,9 @@ import com.example.demo.mapper.LocksMapper;
 import com.example.demo.mapper.UsersMapper;
 import com.example.demo.pojo.Locks;
 import com.example.demo.pojo.Users;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +20,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
-
+@Api(tags = "用户登陆相关")
 @Controller
 @RequestMapping("/sms")
 public class UserManageController {
@@ -40,9 +43,10 @@ public class UserManageController {
      * @return
      * @throws ClientException
      */
+    @ApiOperation("短信发送")
     @RequestMapping(value = "/smsXxs")
     @ResponseBody
-    public Map<String,Object> smsXxs(String phone, HttpServletRequest request) throws ClientException {
+    public Map<String,Object> smsXxs(@ApiParam(name = "phone",value = "用户电话号码，用于发送短信",required = true) String phone, HttpServletRequest request) throws ClientException {
         Map<String,Object> map = new HashMap<>();
         // 验证码（指定长度的随机数）
         String code = CodeUtil.generateVerifyCode(6);
@@ -80,7 +84,9 @@ public class UserManageController {
 
     @ResponseBody
     @RequestMapping(value = "/login")
-    public Resultbean login(String phone,String lock_id,String  password,String code,String time){
+    @ApiOperation("用户登陆")
+    public Resultbean login(@ApiParam(name = "phone",value = "用户电话号码，用于发送短信",required = true) String phone,@ApiParam(name = "lock_id",value = "门锁ID",required = true) String lock_id,@ApiParam(name = "password",value = "密码",required = true) String  password,@ApiParam(name = "code",value = "验证码的值,包含在短信发送返回的data里",
+            required = true) String code,@ApiParam(name = "time",value = "验证码的发送时间,包含在短信发送返回的data里",required = true) String time){
         Map<String,Object > map=new HashMap<>();
         //验证码发送的时间
         Timestamp get =Timestamp.valueOf(time);
@@ -89,6 +95,7 @@ public class UserManageController {
         //获取时间差  时间差单位为微妙但是精度为妙
         long l=now.getTime()-get.getTime();
         l=l/1000;
+
         if(l>180)
         {
             //验证码超时  180秒

@@ -3,16 +3,20 @@ package com.example.demo;
 import com.example.demo.mapper.LocksMapper;
 import com.example.demo.pojo.Locks;
 import com.example.demo.service.socket.ServerSocketdThread;
+//import io.lettuce.core.internal.HostAndPort;
+//import io.lettuce.core.internal.HostAndPort;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.net.ServerSocket;
+import redis.clients.jedis.HostAndPort;
+import redis.clients.jedis.JedisCluster;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.HashSet;
+import java.util.Set;
 
 @SpringBootTest
 @ConfigurationPropertiesScan
@@ -69,6 +73,29 @@ class DemoApplicationTests {
 //        locks.setLockId("635");
 //        locksMapper.insert(locks);
 //    }
+    @Test
+    void setLocksMapper(){
+//        System.out.print("sj");
+        int i;
+        for ( i = 0; i <5 ; i++) {
+            if (i==3){break;}
+        }
+        System.out.println(i);
+    }
+    @Test
+    void rediscluster(){
+        Set<HostAndPort> nodes =new HashSet<>();
+        nodes.add(new  HostAndPort("47.98.192.167",7001));
+        nodes.add(new  HostAndPort("47.98.192.167",7002) );
+        nodes.add(new  HostAndPort("47.98.192.167",7003) );
+        nodes.add(new  HostAndPort("47.98.192.167",7004) );
+        nodes.add(new  HostAndPort("47.98.192.167",7005) );
+        nodes.add(new  HostAndPort("47.98.192.167",7006) );
+
+        JedisCluster jedisCluster=new JedisCluster( nodes);
+        String m= jedisCluster.get("heyu");
+        System.out.println(m);
+    }
 
 
 }
